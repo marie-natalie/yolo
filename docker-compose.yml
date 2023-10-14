@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  #mongodb container
+  yolodb:
+    container_name: yolodb
+    image: mongo:latest
+    networks: 
+      - yolo-network
+    volumes: 
+      - mongodata:/data/db
+
+  #backend container with ngrok
+  backend:
+    container_name: backend
+    build: 
+      context: .
+      dockerfile: Dockerfile-backend
+    networks: 
+      - yolo-network
+    volumes: 
+      - ./app:/app
+    ports: 
+      - "5001:5001"
+    command: ["npm", "start"]
+
+  #frontend container with ngrok
+  frontend:
+    container_name: frontend
+    build: 
+      context: .
+      dockerfile: Dockerfile-frontend
+    networks: 
+      - yolo-network
+    ports: 
+      - "3000:3000"
+    command: ["npm", "start"]
+
+networks:
+  yolo-network: 
+    external: true
+
+volumes:
+  mongodata: 
+    driver: local
