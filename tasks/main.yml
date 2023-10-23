@@ -1,0 +1,14 @@
+name: Install frontend packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nginx
+    - nodejs
+  notify: Restart Nginx
+
+- name: Deploy frontend code
+  copy:
+    src: /path/to/local/frontend/code
+    dest: /var/www/html/
+  notify: Restart Nginx
