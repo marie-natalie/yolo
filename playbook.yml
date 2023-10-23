@@ -26,8 +26,4 @@
         name: database-container-role
       tags: database
 
-  tasks:
-    - name: Provision Database
-      command: /path/to/provisioning_script.sh
   
-
