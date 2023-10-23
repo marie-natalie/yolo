@@ -1,0 +1,33 @@
+---
+- name: Provision and Configure Docker Containers
+  hosts: all
+  become: yes
+  hosts: 192.168.56.6
+  remote_user: vagrant
+  tasks:
+    - name: Clone Code from GitHub
+      git:
+        repo: https://github.com/marie-natalie/yolo.git  
+        dest: /desktop/devops04/yolo/
+
+
+    - name: Frontend Container Setup
+      include_role:
+        name: frontend-container-role
+      tags: frontend
+
+    - name: Backend Container Setup
+      include_role:
+        name: backend-container-role
+      tags: backend
+
+    - name: Database Container Setup
+      include_role:
+        name: database-container-role
+      tags: database
+
+  tasks:
+    - name: Provision Database
+      command: /path/to/provisioning_script.sh
+  
+
